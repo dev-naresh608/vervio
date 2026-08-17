@@ -9,7 +9,7 @@ import { useRecorder } from '../../hooks/useRecorder';
 import { usePracticeContext } from '../../context/PracticeContext';
 import { addRecording } from '../../storage/recordingsRepository';
 import { saveRecordingFile, generateRecordingFileName } from '../../storage/filesystem';
-import { Square, HardDrive, Loader2, Video, Mic } from 'lucide-react';
+import { Square, HardDrive, Loader2, Video, Mic, X } from 'lucide-react';
 
 export const RecordingView: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -64,7 +64,7 @@ export const RecordingView: React.FC = () => {
     onRecordingStop: handleFinishRecording,
   });
 
-  const { stream, requestMedia, startRecording, stopRecording, audioLevel } = recorder;
+  const { stream, requestMedia, startRecording, stopRecording, stopStream, audioLevel } = recorder;
 
   useEffect(() => {
     requestMedia();
@@ -90,6 +90,13 @@ export const RecordingView: React.FC = () => {
   const handleStop = () => {
     if (!isSaving) {
       stopRecording();
+    }
+  };
+
+  const handleCancelRecording = () => {
+    if (confirm('Are you sure you want to cancel? Your current recording will be discarded.')) {
+      stopStream();
+      navigate(`/practice/${categoryId}`);
     }
   };
 
@@ -134,15 +141,27 @@ export const RecordingView: React.FC = () => {
           </span>
         </div>
 
-        <Button
-          variant="danger"
-          size="sm"
-          disabled={isSaving}
-          onClick={handleStop}
-          icon={isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Square className="w-4 h-4 fill-current" />}
-        >
-          {isSaving ? 'Saving...' : 'Stop & Save Recording'}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={isSaving}
+            onClick={handleCancelRecording}
+            icon={<X className="w-4 h-4 text-stone-500" />}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="danger"
+            size="sm"
+            disabled={isSaving}
+            onClick={handleStop}
+            icon={isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Square className="w-4 h-4 fill-current" />}
+          >
+            {isSaving ? 'Saving...' : 'Stop & Save Recording'}
+          </Button>
+        </div>
       </div>
 
       {/* Main Grid: Center Ring Countdown & Side Camera Preview */}
@@ -212,17 +231,29 @@ export const RecordingView: React.FC = () => {
               </>
             )}
 
-            {/* Action Stop Button */}
+            {/* Action Buttons */}
             {!isSaving && (
-              <Button
-                variant="danger"
-                size="lg"
-                className="w-full max-w-xs text-base py-3.5 shadow-md"
-                onClick={handleStop}
-                icon={<Square className="w-4 h-4 fill-current" />}
-              >
-                Stop & Finish Recording
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto text-sm py-3.5 px-6 bg-white border-stone-300 text-stone-800 hover:bg-stone-50"
+                  onClick={handleCancelRecording}
+                  icon={<X className="w-4 h-4 text-stone-600" />}
+                >
+                  Cancel Recording
+                </Button>
+
+                <Button
+                  variant="danger"
+                  size="lg"
+                  className="w-full sm:flex-1 text-base py-3.5 shadow-md"
+                  onClick={handleStop}
+                  icon={<Square className="w-4 h-4 fill-current" />}
+                >
+                  Stop & Finish Recording
+                </Button>
+              </div>
             )}
           </Card>
         </div>

@@ -6,7 +6,7 @@ import { AudioVisualizer } from '../../components/common/AudioVisualizer';
 import { audioManager } from '../../lib/audio/audioManager';
 import { useRecorder } from '../../hooks/useRecorder';
 import { usePracticeContext } from '../../context/PracticeContext';
-import { Camera, Video, ShieldAlert, CheckCircle2, RefreshCw } from 'lucide-react';
+import { Camera, Video, ShieldAlert, CheckCircle2, RefreshCw, X } from 'lucide-react';
 
 export const SpeakingPrepView: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -15,7 +15,7 @@ export const SpeakingPrepView: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const recorder = useRecorder();
-  const { stream, permissionState, errorMessage, requestMedia } = recorder;
+  const { stream, permissionState, errorMessage, requestMedia, stopStream } = recorder;
 
   useEffect(() => {
     requestMedia();
@@ -37,7 +37,8 @@ export const SpeakingPrepView: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate(`/practice/${categoryId}/learning`);
+    stopStream();
+    navigate(`/practice/${categoryId}`);
   };
 
   if (!selectedTopic) {
@@ -57,12 +58,15 @@ export const SpeakingPrepView: React.FC = () => {
     <div className="max-w-2xl mx-auto space-y-6 pb-12">
       <div className="flex items-center justify-between">
         <button
+          type="button"
           onClick={handleCancel}
-          className="text-xs font-medium text-stone-500 hover:text-stone-900 transition-colors inline-flex items-center gap-1"
+          className="text-xs font-medium text-stone-600 hover:text-stone-900 transition-colors inline-flex items-center gap-1.5 focus:ring-2 focus:ring-orange-500/40 focus:outline-none rounded-lg px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 cursor-pointer"
         >
-          ← Back to Preparation View
+          <X className="w-3.5 h-3.5 text-stone-600" />
+          Cancel Practice
         </button>
-        <span className="text-xs font-mono font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">
+
+        <span className="text-xs font-mono font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/80">
           Speaking Duration: {speakingDurationMinutes} Min
         </span>
       </div>
@@ -126,17 +130,29 @@ export const SpeakingPrepView: React.FC = () => {
           <span className="text-sm font-bold text-stone-900">{selectedTopic.title}</span>
         </div>
 
-        {/* CTA Button */}
-        <Button
-          variant="primary"
-          size="lg"
-          className="w-full text-base py-3.5 shadow-md"
-          disabled={permissionState !== 'granted' || !isStreamReady}
-          onClick={handleStartRecording}
-          icon={<Video className="w-5 h-5" />}
-        >
-          {permissionState === 'granted' && isStreamReady ? 'Start Recording Now ●' : 'Connecting Camera & Microphone...'}
-        </Button>
+        {/* CTA Buttons Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full text-sm py-3.5 bg-white border-stone-300 text-stone-800 hover:bg-stone-50"
+            onClick={handleCancel}
+            icon={<X className="w-5 h-5 text-stone-600" />}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="primary"
+            size="lg"
+            className="sm:col-span-2 w-full text-base py-3.5 shadow-md"
+            disabled={permissionState !== 'granted' || !isStreamReady}
+            onClick={handleStartRecording}
+            icon={<Video className="w-5 h-5" />}
+          >
+            {permissionState === 'granted' && isStreamReady ? 'Start Recording Now ●' : 'Connecting Camera...'}
+          </Button>
+        </div>
       </Card>
     </div>
   );

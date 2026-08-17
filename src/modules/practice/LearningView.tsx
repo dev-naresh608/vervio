@@ -6,7 +6,7 @@ import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { audioManager } from '../../lib/audio/audioManager';
 import { usePracticeContext } from '../../context/PracticeContext';
-import { Play, Pause, RotateCcw, Video, Lightbulb, CheckCircle2, HelpCircle, Sparkles } from 'lucide-react';
+import { Play, Pause, RotateCcw, Video, Lightbulb, CheckCircle2, HelpCircle, Sparkles, X } from 'lucide-react';
 
 export const LearningView: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -104,6 +104,17 @@ export const LearningView: React.FC = () => {
 
         {/* Timer Control Buttons */}
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleCancel}
+            icon={<X className="w-3.5 h-3.5 text-stone-500" />}
+            title="Cancel Practice Session"
+            className="border-stone-300 text-stone-700 hover:bg-stone-100"
+          >
+            Cancel
+          </Button>
+
           {isRunning && (
             <Button variant="ghost" size="sm" onClick={pause} icon={<Pause className="w-4 h-4 text-stone-600" />}>
               Pause
