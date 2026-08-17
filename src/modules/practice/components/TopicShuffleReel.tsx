@@ -123,8 +123,8 @@ export const TopicShuffleReel: React.FC<TopicShuffleReelProps> = ({
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
         }}
       >
-        {shouldReduceMotion ? (
-          /* Reduced motion fallback: Simple crossfade center title */
+        {shouldReduceMotion || visibleSlots.length === 0 ? (
+          /* Reduced motion or initial locked title fallback */
           <div className="w-full text-center">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight leading-snug">
               {centerTitle}

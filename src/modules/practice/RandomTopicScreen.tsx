@@ -76,9 +76,19 @@ export const RandomTopicScreen: React.FC = () => {
     });
   };
 
+  const handleStartSpeaking = () => {
+    if (activeCategory && selectedTopic) {
+      navigate(`/practice/${activeCategory.id}/speaking-prep`);
+    }
+  };
+
   const handleStartLearning = () => {
     if (activeCategory && selectedTopic) {
-      navigate(`/practice/${activeCategory.id}/learning`);
+      if (learningDurationMinutes === 0) {
+        navigate(`/practice/${activeCategory.id}/speaking-prep`);
+      } else {
+        navigate(`/practice/${activeCategory.id}/learning`);
+      }
     }
   };
 
@@ -101,7 +111,7 @@ export const RandomTopicScreen: React.FC = () => {
           type="button"
           onClick={() => navigate('/')}
           disabled={isShuffling}
-          className="text-xs font-medium text-stone-500 hover:text-stone-900 transition-colors inline-flex items-center gap-1 disabled:opacity-50 focus:ring-2 focus:ring-orange-500/40 focus:outline-none rounded-lg px-2 py-1"
+          className="text-xs font-medium text-stone-500 hover:text-stone-900 transition-colors inline-flex items-center gap-1 disabled:opacity-50 focus:ring-2 focus:ring-orange-500/40 focus:outline-none rounded-lg px-2 py-1 cursor-pointer"
         >
           ← Change Category
         </button>
@@ -125,6 +135,9 @@ export const RandomTopicScreen: React.FC = () => {
           onSpeakingDurationChange={setSpeakingDurationMinutes}
           onStartSession={handleStartSession}
           onBrowseTopics={() => navigate(`/practice/${activeCategory.id}/topics`)}
+          selectedTopic={selectedTopic}
+          onStartSpeaking={handleStartSpeaking}
+          onStartLearning={handleStartLearning}
         />
       ) : (
         /* Screen 2: Animated Vertical Rolling Reel & Topic Selection View */
@@ -132,9 +145,9 @@ export const RandomTopicScreen: React.FC = () => {
           <TopicShuffleReel
             categoryName={activeCategory.name}
             visibleSlots={visibleSlots}
-            lockedTitle={lockedTopic?.title}
+            lockedTitle={lockedTopic?.title || selectedTopic?.title}
             isShuffling={isShuffling}
-            isLocked={isLocked}
+            isLocked={isLocked || (!isShuffling && !!selectedTopic)}
           />
 
           <div className="flex items-center justify-center gap-3">

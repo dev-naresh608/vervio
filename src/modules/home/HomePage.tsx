@@ -36,9 +36,10 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { categories, isLoading } = useTopics();
-  const { setSelectedCategory } = usePracticeContext();
+  const { setSelectedCategory, setSelectedTopic } = usePracticeContext();
 
   const handleSelectCategory = (cat: typeof categories[0]) => {
+    setSelectedTopic(null);
     setSelectedCategory(cat);
     navigate(`/practice/${cat.id}`);
   };
