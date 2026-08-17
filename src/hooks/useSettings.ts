@@ -2,10 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 import type { AppSettings } from '../types';
 import { getSettings, saveSettings as persistSettings } from '../storage/settingsRepository';
 import { audioManager } from '../lib/audio/audioManager';
+import { usePracticeContext } from '../context/PracticeContext';
 
 export function useSettings() {
   const [settings, setSettings] = useState<AppSettings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { reloadDefaultSettings } = usePracticeContext();
 
   const loadSettings = useCallback(async () => {
     setIsLoading(true);
@@ -28,7 +30,10 @@ export function useSettings() {
     const updated = await persistSettings(newPartial);
     setSettings(updated);
     audioManager.configure(updated);
-  }, []);
+    if (reloadDefaultSettings) {
+      await reloadDefaultSettings();
+    }
+  }, [reloadDefaultSettings]);
 
   return {
     settings,

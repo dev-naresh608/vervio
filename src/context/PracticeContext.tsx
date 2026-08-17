@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { TopicCategory, Topic, SelectedDifficulties, Recording } from '../types';
+import { getSettings } from '../storage/settingsRepository';
 
 interface PracticeContextType {
   selectedCategory: TopicCategory | null;
@@ -19,6 +20,7 @@ interface PracticeContextType {
   activeStream: MediaStream | null;
   setActiveStream: (stream: MediaStream | null) => void;
   applyPreset: (preset: 'easy' | 'medium' | 'hard' | 'easy-medium' | 'all') => void;
+  reloadDefaultSettings: () => Promise<void>;
 }
 
 const DEFAULT_DIFFICULTIES: SelectedDifficulties = {
@@ -38,6 +40,26 @@ export const PracticeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [lastSavedBlobUrl, setLastSavedBlobUrl] = useState<string | undefined>(undefined);
   const [completedRecording, setCompletedRecording] = useState<Recording | undefined>(undefined);
   const [activeStream, setActiveStream] = useState<MediaStream | null>(null);
+
+  const reloadDefaultSettings = useCallback(async () => {
+    try {
+      const settings = await getSettings();
+      if (settings) {
+        if (typeof settings.defaultLearningDuration === 'number') {
+          setLearningDurationMinutes(settings.defaultLearningDuration);
+        }
+        if (typeof settings.defaultSpeakingDuration === 'number') {
+          setSpeakingDurationMinutes(settings.defaultSpeakingDuration);
+        }
+      }
+    } catch (err) {
+      console.error('Error loading settings into context:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    reloadDefaultSettings();
+  }, [reloadDefaultSettings]);
 
   const applyPreset = (preset: 'easy' | 'medium' | 'hard' | 'easy-medium' | 'all') => {
     switch (preset) {
@@ -79,6 +101,7 @@ export const PracticeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         activeStream,
         setActiveStream,
         applyPreset,
+        reloadDefaultSettings,
       }}
     >
       {children}

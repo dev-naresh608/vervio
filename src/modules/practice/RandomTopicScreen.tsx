@@ -24,11 +24,12 @@ export const RandomTopicScreen: React.FC = () => {
     speakingDurationMinutes,
     setSpeakingDurationMinutes,
     applyPreset,
+    reloadDefaultSettings,
   } = usePracticeContext();
 
   const [hasStartedPractice, setHasStartedPractice] = useState(false);
 
-  // Sync category from URL param if needed
+  // Sync category from URL param if needed & load latest default durations from Settings
   useEffect(() => {
     if (categoryId && (!selectedCategory || selectedCategory.id !== categoryId)) {
       const match = categories.find((c) => c.id === categoryId);
@@ -36,7 +37,8 @@ export const RandomTopicScreen: React.FC = () => {
         setSelectedCategory(match);
       }
     }
-  }, [categoryId, categories, selectedCategory, setSelectedCategory]);
+    reloadDefaultSettings();
+  }, [categoryId, categories, selectedCategory, setSelectedCategory, reloadDefaultSettings]);
 
   const activeCategory = selectedCategory || categories.find((c) => c.id === categoryId);
   const activePool = activeCategory ? getTopicPool(activeCategory, selectedDifficulties) : [];
