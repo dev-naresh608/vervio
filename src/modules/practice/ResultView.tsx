@@ -61,12 +61,12 @@ export const ResultView: React.FC = () => {
       </div>
 
       {/* Main Video Playback Card */}
-      <Card className="p-6 sm:p-8 space-y-6 border-2 border-stone-200">
+      <Card className="p-6 sm:p-8 space-y-6 border border-stone-200/80 shadow-sm">
         <div className="space-y-1">
           <span className="text-xs font-bold text-orange-600 uppercase tracking-wider block">
             PRACTICE REVIEW
           </span>
-          <h2 className="text-2xl font-extrabold text-stone-900 leading-snug">{selectedTopic.title}</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 leading-snug">{selectedTopic.title}</h2>
         </div>
 
         {/* Video Player */}

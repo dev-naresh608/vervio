@@ -185,8 +185,8 @@ export const BrowseTopicsPage: React.FC = () => {
                 onClick={() => handleSelectTopic(topic)}
                 className={`group p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
                   isSelected
-                    ? 'bg-orange-50/80 border-orange-300 ring-1 ring-orange-400/50 shadow-xs'
-                    : 'bg-white border-stone-200/80 hover:border-orange-300 hover:shadow-xs hover:bg-stone-50/50'
+                    ? 'bg-orange-50/70 border-orange-300 ring-1 ring-orange-300/60 shadow-xs'
+                    : 'bg-white border-stone-200/80 hover:border-stone-300 hover:shadow-xs hover:bg-stone-50/40'
                 }`}
               >
                 <div className="space-y-1.5 flex-1 min-w-0">
@@ -213,7 +213,7 @@ export const BrowseTopicsPage: React.FC = () => {
                     )}
                   </div>
 
-                  <h3 className="text-sm sm:text-base font-medium text-stone-800 group-hover:text-orange-600 transition-colors leading-relaxed">
+                  <h3 className="text-sm sm:text-base font-semibold text-stone-800 group-hover:text-orange-600 transition-colors leading-relaxed">
                     {topic.title}
                   </h3>
                 </div>

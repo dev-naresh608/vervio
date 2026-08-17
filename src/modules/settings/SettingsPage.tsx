@@ -83,9 +83,9 @@ export const SettingsPage: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
-      <div className="border-b border-stone-200 pb-4">
-        <h1 className="text-2xl font-extrabold text-stone-900">Application Settings</h1>
-        <p className="text-xs text-stone-500">Configure practice preferences, sound effects, voice feedback, and local directory storage</p>
+      <div className="border-b border-stone-200 pb-5">
+        <h1 className="text-2xl font-bold text-stone-900">Settings</h1>
+        <p className="text-xs text-stone-500 mt-0.5">Configure practice preferences, sound effects, voice feedback, and local storage</p>
       </div>
 
       {/* 1. Practice Defaults Section */}
@@ -149,14 +149,16 @@ export const SettingsPage: React.FC = () => {
               </div>
               <button
                 type="button"
+                role="switch"
+                aria-checked={settings.soundEffectsEnabled}
                 onClick={() => updateSettings({ soundEffectsEnabled: !settings.soundEffectsEnabled })}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all focus:ring-2 focus:ring-orange-500/40 focus:outline-none ${
-                  settings.soundEffectsEnabled
-                    ? 'bg-orange-600 text-white shadow-xs'
-                    : 'bg-stone-200 text-stone-600'
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-orange-500/40 focus:outline-none cursor-pointer ${
+                  settings.soundEffectsEnabled ? 'bg-orange-600' : 'bg-stone-200'
                 }`}
               >
-                {settings.soundEffectsEnabled ? 'ON' : 'OFF'}
+                <span className={`inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
+                  settings.soundEffectsEnabled ? 'translate-x-6' : 'translate-x-1'
+                }`} />
               </button>
             </div>
 
@@ -201,14 +203,16 @@ export const SettingsPage: React.FC = () => {
               </div>
               <button
                 type="button"
+                role="switch"
+                aria-checked={settings.voiceFeedbackEnabled}
                 onClick={() => updateSettings({ voiceFeedbackEnabled: !settings.voiceFeedbackEnabled })}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all focus:ring-2 focus:ring-orange-500/40 focus:outline-none ${
-                  settings.voiceFeedbackEnabled
-                    ? 'bg-orange-600 text-white shadow-xs'
-                    : 'bg-stone-200 text-stone-600'
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-orange-500/40 focus:outline-none cursor-pointer ${
+                  settings.voiceFeedbackEnabled ? 'bg-orange-600' : 'bg-stone-200'
                 }`}
               >
-                {settings.voiceFeedbackEnabled ? 'ON' : 'OFF'}
+                <span className={`inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
+                  settings.voiceFeedbackEnabled ? 'translate-x-6' : 'translate-x-1'
+                }`} />
               </button>
             </div>
 

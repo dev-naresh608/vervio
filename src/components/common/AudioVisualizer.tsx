@@ -13,7 +13,7 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ level, label =
       <div className="flex-1">
         <div className="flex items-center justify-between text-xs text-stone-600 mb-1">
           <span>{label}</span>
-          <span className="font-mono text-[10px] text-stone-500">{level}%</span>
+          <span className="font-mono text-xs text-stone-500">{level}%</span>
         </div>
         <div className="w-full bg-stone-200 h-2 rounded-full overflow-hidden">
           <div

@@ -9,7 +9,7 @@ import { useRecorder } from '../../hooks/useRecorder';
 import { usePracticeContext } from '../../context/PracticeContext';
 import { addRecording } from '../../storage/recordingsRepository';
 import { saveRecordingFile, generateRecordingFileName } from '../../storage/filesystem';
-import { Square, HardDrive, Loader2, Video, Mic, X } from 'lucide-react';
+import { Square, HardDrive, Loader2, Video, Mic, X, Lightbulb } from 'lucide-react';
 
 export const RecordingView: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -272,7 +272,9 @@ export const RecordingView: React.FC = () => {
             </div>
 
             {/* Compact Video Viewport */}
-            <div className="relative aspect-video rounded-xl bg-black overflow-hidden flex items-center justify-center border border-stone-800">
+            <div className={`relative aspect-video rounded-xl bg-black overflow-hidden flex items-center justify-center border ${
+              stream ? 'border-emerald-500/40 ring-1 ring-emerald-500/30' : 'border-stone-800'
+            }`}>
               {stream ? (
                 <video
                   ref={videoRef}
@@ -301,7 +303,10 @@ export const RecordingView: React.FC = () => {
 
           {/* Quick Helpful Reminder Card */}
           <Card className="p-4 border border-stone-200/80 bg-stone-50 rounded-2xl text-xs space-y-1.5 text-stone-600">
-            <span className="font-bold text-stone-900 block">💡 Speaking Tips:</span>
+            <span className="font-semibold text-stone-900 flex items-center gap-1.5 block">
+              <Lightbulb className="w-3.5 h-3.5 text-orange-600" />
+              Speaking Tips
+            </span>
             <ul className="list-disc list-inside space-y-1 text-stone-500">
               <li>Speak clearly and maintain a steady pace</li>
               <li>State definition, mechanics & trade-offs</li>

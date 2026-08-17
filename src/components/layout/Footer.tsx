@@ -3,7 +3,7 @@ import { Lock, HardDrive, Shield } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="mt-auto border-t border-stone-200 bg-stone-100/60 py-8 text-stone-500 text-sm">
+    <footer className="mt-auto border-t border-stone-200 bg-stone-100/60 py-10 text-stone-500 text-sm">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <span className="font-bold text-stone-800 tracking-tight">VERVIO</span>

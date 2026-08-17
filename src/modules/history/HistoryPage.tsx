@@ -112,15 +112,15 @@ export const HistoryPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-12">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-5">
         <div>
-          <h1 className="text-2xl font-extrabold text-stone-900">Practice History</h1>
-          <p className="text-xs text-stone-500">Review and play back your past speaking video recordings</p>
+          <h1 className="text-2xl font-bold text-stone-900">Practice History</h1>
+          <p className="text-xs text-stone-500 mt-0.5">Review and play back your past speaking video recordings</p>
         </div>
 
         {recordings.length > 0 && (
           <Button variant="ghost" size="sm" onClick={handleClearAll} icon={<Trash2 className="w-3.5 h-3.5 text-red-500" />}>
-            Clear History List
+            Clear History
           </Button>
         )}
       </div>
@@ -128,30 +128,47 @@ export const HistoryPage: React.FC = () => {
       {/* Filter & Search Bar */}
       {recordings.length > 0 && (
         <div className="flex flex-col sm:flex-row gap-3">
+          {/* Search */}
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-3" />
+            <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search history by topic title..."
-              className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-orange-500/40 bg-white"
+              placeholder="Search by topic title..."
+              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-orange-500/40 bg-white"
             />
           </div>
 
+          {/* Category pill filters */}
           {categoriesInHistory.length > 0 && (
-            <select
-              value={selectedCategoryFilter}
-              onChange={(e) => setSelectedCategoryFilter(e.target.value)}
-              className="px-3 py-2 text-xs rounded-xl border border-stone-300 bg-white text-stone-800 font-medium focus:ring-2 focus:ring-orange-500/40"
-            >
-              <option value="all">All Categories</option>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <button
+                type="button"
+                onClick={() => setSelectedCategoryFilter('all')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  selectedCategoryFilter === 'all'
+                    ? 'bg-stone-900 text-white'
+                    : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                }`}
+              >
+                All
+              </button>
               {categoriesInHistory.map((cat) => (
-                <option key={cat} value={cat}>
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedCategoryFilter(cat)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                    selectedCategoryFilter === cat
+                      ? 'bg-orange-600 text-white'
+                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  }`}
+                >
                   {cat}
-                </option>
+                </button>
               ))}
-            </select>
+            </div>
           )}
         </div>
       )}
@@ -160,7 +177,7 @@ export const HistoryPage: React.FC = () => {
       {isLoading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-20 bg-stone-200/60 rounded-2xl animate-pulse" />
+            <div key={i} className="h-20 bg-stone-200/50 rounded-2xl animate-pulse" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
@@ -174,7 +191,7 @@ export const HistoryPage: React.FC = () => {
           </div>
         </Card>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {filtered.map((rec) => (
             <Card
               key={rec.id}
@@ -182,31 +199,31 @@ export const HistoryPage: React.FC = () => {
               className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 border border-stone-200/80 cursor-pointer group"
               onClick={() => openWatchModal(rec)}
             >
-              <div className="space-y-1 flex-1">
+              <div className="space-y-1 flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold text-orange-600 uppercase tracking-wider">
+                  <span className="text-[11px] font-semibold text-orange-600 uppercase tracking-wider">
                     {rec.categoryName}
                   </span>
-                  <span className="text-stone-300">•</span>
+                  <span className="text-stone-300">·</span>
                   <span className="text-[11px] text-stone-500 inline-flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
                     {formatDate(rec.recordedAt)}
                   </span>
                 </div>
 
-                <h3 className="font-bold text-stone-900 text-sm sm:text-base group-hover:text-orange-600 transition-colors">
+                <h3 className="font-semibold text-stone-900 text-sm group-hover:text-orange-600 transition-colors leading-snug">
                   {rec.topicTitle}
                 </h3>
 
                 <div className="flex items-center gap-3 text-xs text-stone-500 font-mono">
                   <span className="inline-flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-stone-400" />
+                    <Clock className="w-3 h-3 text-stone-400" />
                     {formatDuration(rec.duration)}
                   </span>
-                  <span>•</span>
-                  <span className="inline-flex items-center gap-1">
-                    <HardDrive className="w-3.5 h-3.5 text-emerald-600" />
-                    {rec.fileName}
+                  <span>·</span>
+                  <span className="inline-flex items-center gap-1 truncate">
+                    <HardDrive className="w-3 h-3 text-emerald-600 shrink-0" />
+                    <span className="truncate max-w-[180px]">{rec.fileName}</span>
                   </span>
                 </div>
               </div>
@@ -218,7 +235,7 @@ export const HistoryPage: React.FC = () => {
                   onClick={() => openWatchModal(rec)}
                   icon={<Video className="w-3.5 h-3.5" />}
                 >
-                  Play Video
+                  Play
                 </Button>
 
                 {(rec.videoBlob || rec.videoBlobUrl) && (
@@ -236,7 +253,7 @@ export const HistoryPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={(e) => handleDelete(rec.id, e)}
-                  className="p-2 rounded-xl text-stone-400 hover:text-red-600 hover:bg-red-50 transition-colors focus:ring-2 focus:ring-orange-500/40 focus:outline-none"
+                  className="p-2 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 transition-colors focus:ring-2 focus:ring-orange-500/40 focus:outline-none"
                   title="Delete history entry"
                   aria-label="Delete history entry"
                 >
@@ -257,7 +274,7 @@ export const HistoryPage: React.FC = () => {
           maxWidth="2xl"
         >
           <div className="space-y-4">
-            <div className="relative aspect-video w-full rounded-2xl bg-stone-950 overflow-hidden shadow-lg border border-stone-800">
+            <div className="relative aspect-video w-full rounded-xl bg-stone-950 overflow-hidden shadow-lg border border-stone-800">
               {activePlaybackUrl ? (
                 <video
                   src={activePlaybackUrl}
@@ -280,10 +297,10 @@ export const HistoryPage: React.FC = () => {
 
             <div className="bg-stone-50 p-3.5 rounded-xl border border-stone-200 text-xs text-stone-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
-                <span className="font-bold text-stone-800">{selectedRecording.categoryName}</span>
-                <span className="mx-2">•</span>
+                <span className="font-semibold text-stone-800">{selectedRecording.categoryName}</span>
+                <span className="mx-2">·</span>
                 <span>{formatDate(selectedRecording.recordedAt)}</span>
-                <span className="mx-2">•</span>
+                <span className="mx-2">·</span>
                 <span className="font-mono font-semibold">{formatDuration(selectedRecording.duration)}</span>
               </div>
 
@@ -295,7 +312,7 @@ export const HistoryPage: React.FC = () => {
                   icon={<Download className="w-3.5 h-3.5 text-orange-600" />}
                   className="bg-white"
                 >
-                  Download Video File
+                  Download Video
                 </Button>
               )}
             </div>

@@ -49,7 +49,7 @@ export const Modal: React.FC<ModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-stone-900/40 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm transition-opacity"
           />
 
           {/* Modal Card */}
@@ -58,9 +58,9 @@ export const Modal: React.FC<ModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', duration: 0.3 }}
-            className={`relative w-full ${maxWidthClass} bg-white rounded-2xl shadow-xl border border-stone-200 p-6 z-10 my-8`}
+            className={`relative w-full ${maxWidthClass} bg-white rounded-2xl shadow-xl border border-stone-200/80 p-6 z-10 my-8`}
           >
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-stone-100">
+            <div className="flex items-start justify-between pb-4 mb-4 border-b border-stone-100 gap-4">
               <h3 className="text-lg font-semibold text-stone-900">{title}</h3>
               <button
                 onClick={onClose}

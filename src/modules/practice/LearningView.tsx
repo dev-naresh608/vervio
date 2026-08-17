@@ -69,9 +69,22 @@ export const LearningView: React.FC = () => {
       </div>
 
       {/* Sticky Top Timer Bar */}
-      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-stone-200 shadow-md flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="relative w-12 h-12 flex items-center justify-center font-mono font-bold text-sm text-orange-600">
+      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl border border-stone-200 shadow-md flex items-center justify-between gap-4">
+        {/* Left: Cancel */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleCancel}
+          icon={<X className="w-3.5 h-3.5 text-stone-500" />}
+          title="Cancel Practice Session"
+          className="text-stone-600 hover:text-stone-900"
+        >
+          Cancel
+        </Button>
+
+        {/* Center: Circular timer */}
+        <div className="flex items-center gap-3 flex-1 justify-center">
+          <div className="relative w-10 h-10 flex items-center justify-center font-mono font-bold text-sm text-orange-600">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
               <path
                 className="text-stone-100"
@@ -90,51 +103,38 @@ export const LearningView: React.FC = () => {
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
               />
             </svg>
-            <span className="absolute text-xs">{formattedTime}</span>
+            <span className="absolute text-[10px] font-bold">{formattedTime}</span>
           </div>
           <div>
-            <span className="text-[10px] font-bold text-stone-600 uppercase tracking-wider block">
-              PREPARATION COUNTDOWN
-            </span>
-            <span className="text-xs text-stone-500 font-medium">
-              {isRunning ? 'Timer Active' : isPaused ? 'Timer Paused' : 'Timer Finished'}
+            <span className="text-xs font-semibold text-stone-700 block">Preparation Time</span>
+            <span className="text-[11px] text-stone-400">
+              {isRunning ? 'Running' : isPaused ? 'Paused' : 'Finished'}
             </span>
           </div>
         </div>
 
-        {/* Timer Control Buttons */}
+        {/* Right: Timer controls & proceed */}
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleCancel}
-            icon={<X className="w-3.5 h-3.5 text-stone-500" />}
-            title="Cancel Practice Session"
-            className="border-stone-300 text-stone-700 hover:bg-stone-100"
-          >
-            Cancel
-          </Button>
-
           {isRunning && (
-            <Button variant="ghost" size="sm" onClick={pause} icon={<Pause className="w-4 h-4 text-stone-600" />}>
+            <Button variant="ghost" size="sm" onClick={pause} icon={<Pause className="w-3.5 h-3.5 text-stone-600" />}>
               Pause
             </Button>
           )}
           {isPaused && (
-            <Button variant="outline" size="sm" onClick={resume} icon={<Play className="w-4 h-4 text-emerald-600" />}>
+            <Button variant="outline" size="sm" onClick={resume} icon={<Play className="w-3.5 h-3.5 text-emerald-600" />}>
               Resume
             </Button>
           )}
-          <Button variant="ghost" size="sm" onClick={() => reset()} icon={<RotateCcw className="w-4 h-4 text-stone-400" />}>
+          <Button variant="ghost" size="sm" onClick={() => reset()} icon={<RotateCcw className="w-3.5 h-3.5 text-stone-400" />}>
             Reset
           </Button>
           <Button
             variant="primary"
             size="sm"
             onClick={handleStartSpeaking}
-            icon={<Video className="w-4 h-4" />}
+            icon={<Video className="w-3.5 h-3.5" />}
           >
-            Start Speaking →
+            Start Speaking
           </Button>
         </div>
       </div>
